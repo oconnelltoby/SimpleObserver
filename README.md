@@ -1,3 +1,3 @@
 # SimpleObserver
 
-A description of this package.
+A simple implementation of a reactive style observer pattern
