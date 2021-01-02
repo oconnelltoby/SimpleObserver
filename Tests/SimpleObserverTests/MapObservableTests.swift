@@ -144,4 +144,30 @@ final class MapObservableTests: XCTestCase {
         XCTAssertNil(weakMapObservable)
         cancelable.cancel()
     }
+    
+    func testTransformIsDeallocatedWhenCanceled() {
+        class Object {}
+        weak var weakObject: Object?
+        
+        let passthroughSubject = PassthroughSubject<Void>()
+        var cancelable: Cancelable?
+        
+        autoreleasepool {
+            let object = Object()
+            
+            let mapObservable = passthroughSubject
+                .map {
+                    weakObject = object
+                }
+            
+            cancelable = mapObservable
+                .observe { _ in }
+            
+            passthroughSubject.send(())
+        }
+        
+        XCTAssertNotNil(weakObject)
+        cancelable?.cancel()
+        XCTAssertNil(weakObject)
+    }
 }
