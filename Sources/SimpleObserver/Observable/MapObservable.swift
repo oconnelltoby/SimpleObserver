@@ -8,8 +8,8 @@ public class MapObservable<Upstream, Output>: Observable where Upstream: Observa
     }
     
     public func observe(_ action: @escaping (Output) -> Void) -> Cancelable {
-        upstream.observe { output in
-            action(self.transform(output))
+        upstream.observe { [transform] output in
+            action(transform(output))
         }
     }
 }

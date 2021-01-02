@@ -127,7 +127,7 @@ final class MapObservableTests: XCTestCase {
         cancelable.cancel()
     }
     
-    func testMapObservableIsDeallocatedWhenUpstreamIsCancelled() {
+    func testMapObservableIsDeallocatedWhenNoLongerNeeded() {
         let passthroughSubject = PassthroughSubject<Void>()
         weak var weakMapObservable: MapObservable<PassthroughSubject<Void>, Void>?
         var cancelable: Cancelable
@@ -141,8 +141,7 @@ final class MapObservableTests: XCTestCase {
             weakMapObservable = mapObservable
         }
         
-        XCTAssertNotNil(weakMapObservable)
-        cancelable.cancel()
         XCTAssertNil(weakMapObservable)
+        cancelable.cancel()
     }
 }
